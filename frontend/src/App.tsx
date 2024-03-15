@@ -1,11 +1,12 @@
+import { Box } from '@mui/material';
 
 function App() {
 
   return (
     <>
-      <div>
-
-      </div>
+      <Box>
+        TEST APP
+      </Box>
     </>
   );
 }
