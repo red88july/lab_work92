@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { AppBar, Grid, styled, Toolbar, Typography } from '@mui/material';
 
 import { useAppSelector } from '../../../app/hooks.ts';
-import { selectUserLog } from '../../../features/users/usersSlice.ts';
+import { selectUser } from '../../../features/users/usersSlice.ts';
 
 import UserMenu from './UserMenu';
 import GuestMenu from './GuestMenu';
@@ -16,7 +16,7 @@ const Link = styled(NavLink)({
 });
 
 const AppToolbar = () => {
-  const user = useAppSelector(selectUserLog);
+  const user = useAppSelector(selectUser);
 
   if (user === undefined) {
     return null;

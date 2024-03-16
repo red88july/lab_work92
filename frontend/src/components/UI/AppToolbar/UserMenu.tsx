@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {Button, Menu, MenuItem} from '@mui/material';
 
-// import { useAppDispatch } from '../../../app/hooks.ts';
-// // import { logout } from '../../../features/users/usersThunk.ts';
-
 import { User } from '../../../types';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { logout } from '../../../features/users/usersThunk.ts';
