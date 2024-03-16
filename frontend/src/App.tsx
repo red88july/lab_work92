@@ -5,6 +5,7 @@ import LoginForm from './features/users/LoginForm';
 import PageNoFoundPicture from '../../frontend/src/assets/pic/404PageNotFound.jpg';
 
 import Layout from './components/Layout/Layout';
+import Chat from './features/Chat';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={(<LoginForm/>)}/>
             <Route path="/login" element={(<LoginForm/>)}/>
             <Route path="/register" element={(<RegisterForm/>)}/>
+            <Route path="/chat" element={(<Chat />)}/>
             <Route path="*" element={(
               <Box
                 sx={{

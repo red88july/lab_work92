@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Alert,
   Avatar,
@@ -26,6 +26,7 @@ const LoginForm = () => {
 
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectLoginError);
+  const navigate = useNavigate();
 
   const isLogin = useSelector(selectLoginLoading);
 
@@ -52,6 +53,8 @@ const LoginForm = () => {
         password: '',
       };
     });
+
+    navigate('/chat');
   };
 
   return (
