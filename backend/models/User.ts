@@ -37,6 +37,11 @@ const UserSchema = new Schema<UserDataExtendsSchema, UserMethods, UserModel>({
         required: true,
     },
 
+    displayName: {
+        type: String,
+        required: true,
+    },
+
 }, { versionKey: false });
 
 UserSchema.methods.generatedToken = function () {

@@ -9,6 +9,7 @@ usersRouter.post('/',  async (req, res, next) => {
    try {
        const userData: UserTypes = {
            username: req.body.username,
+           displayName: req.body.displayName,
            password: req.body.password,
        };
 

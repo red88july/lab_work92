@@ -7,6 +7,7 @@ export interface ActiveConnections {
 
 export interface UserTypes {
     username: string;
+    displayName: string;
     password: string;
 }
 
