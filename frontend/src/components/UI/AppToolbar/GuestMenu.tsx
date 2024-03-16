@@ -1,14 +1,23 @@
 import { Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
+const signUpBtn = {
+  background: '#26a69a',
+  borderRadius: '10px',
+  '&:hover': {
+    background: '#689f38',
+  },
+  marginLeft: '10px',
+};
+
 const GuestMenu = () => {
   return (
     <>
-      <Button component={NavLink} to="/register" color="inherit">
-        Sign Up
-      </Button>
       <Button component={NavLink} to="/login" color="inherit">
-        Sign In
+        Log In
+      </Button>
+      <Button sx={signUpBtn} component={NavLink} to="/register" color="inherit">
+        Create account
       </Button>
     </>
   );

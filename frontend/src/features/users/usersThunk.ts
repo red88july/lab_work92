@@ -4,6 +4,8 @@ import {isAxiosError} from 'axios';
 import axiosApi from '../../axiosApi.ts';
 
 import { GlobalError, LoginUser, RegisterUser, RegistrationResponse, ValidationError } from '../../types';
+import { RootState } from '../../app/store.ts';
+import { unsetUser } from './usersSlice.ts';
 
 export const registration = createAsyncThunk<RegistrationResponse, RegisterUser, {
   rejectValue: ValidationError
@@ -39,11 +41,11 @@ export const login = createAsyncThunk<RegistrationResponse, LoginUser, { rejectV
   }
 );
 
-// export const logout = createAsyncThunk<void, undefined, { state: RootState }>(
-//   'users/logout',
-//   async (_, {getState, dispatch}) => {
-//     const token = getState().users.usersLog?.token;
-//     await axiosApi.delete('/users/sessions', {headers: {'Authorization': `Bearer:${token}`}});
-//     dispatch(unsetUser());
-//   }
-// );
+export const logout = createAsyncThunk<void, undefined, { state: RootState }>(
+  'users/logout',
+  async (_, {getState, dispatch}) => {
+    const token = getState().users.users?.token;
+    await axiosApi.delete('/users/sessions', {headers: {'Authorization': `Bearer:${token}`}});
+    dispatch(unsetUser());
+  }
+);

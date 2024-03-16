@@ -18,7 +18,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {login} from './usersThunk';
 import {selectLoginError, selectLoginLoading} from './usersSlice';
-import { LoginUser, RegisterUser } from '../../types';
+import { LoginUser } from '../../types';
 import {useSelector} from 'react-redux';
 
 
@@ -70,7 +70,6 @@ const LoginForm = () => {
             {error.error || 'Username or password is not correct!'}
           </Alert>
         )}
-
         <Box component="form" onSubmit={submitFormHandler} sx={{mt: 1}}>
           <TextField
             required
@@ -106,7 +105,7 @@ const LoginForm = () => {
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link component={RouterLink} to="/register" variant="body2">
-                Or Sign Up
+                Or Create account
               </Link>
             </Grid>
           </Grid>

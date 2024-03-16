@@ -5,6 +5,8 @@ import {Button, Menu, MenuItem} from '@mui/material';
 // // import { logout } from '../../../features/users/usersThunk.ts';
 
 import { User } from '../../../types';
+import { useAppDispatch } from '../../../app/hooks.ts';
+import { logout } from '../../../features/users/usersThunk.ts';
 
 
 interface Props {
@@ -12,7 +14,7 @@ interface Props {
 }
 
 const UserMenu: React.FC<Props> = ({user}) => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -24,7 +26,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
   };
 
   const handleClickLogout = () => {
-    // dispatch(logout());
+    dispatch(logout());
   };
 
   return (

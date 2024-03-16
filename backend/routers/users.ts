@@ -5,7 +5,7 @@ import User from "../models/User";
 import {UserTypes} from "../types";
 export const usersRouter = Router();
 
-usersRouter.post('/',  async (req, res, next) => {
+usersRouter.post('/', async (req, res, next) => {
    try {
        const userData: UserTypes = {
            username: req.body.username,
@@ -49,29 +49,29 @@ usersRouter.post('/sessions', async (req, res ,next) => {
     }
 });
 
-// usersRouter.delete('/sessions', async (req, res ,next) => {
-//     try {
-//         const message = {message: 'Success!'};
-//
-//         const headerValue = req.get('Authorization');
-//
-//         if(!headerValue) {
-//             return res.send(message);
-//         }
-//
-//         const [_bearer, token] = headerValue.split(' ');
-//
-//         const user = await User.findOne({token});
-//
-//         if(!user) {
-//             return res.send(message);
-//         }
-//
-//         user.generatedToken();
-//         await user.save();
-//
-//         return res.send(message);
-//     } catch (e) {
-//         next(e);
-//     }
-// })
+usersRouter.delete('/sessions', async (req, res ,next) => {
+    try {
+        const message = {message: 'Success!'};
+
+        const headerValue = req.get('Authorization');
+
+        if(!headerValue) {
+            return res.send(message);
+        }
+
+        const [_bearer, token] = headerValue.split(' ');
+
+        const user = await User.findOne({token});
+
+        if(!user) {
+            return res.send(message);
+        }
+
+        user.generatedToken();
+        await user.save();
+
+        return res.send(message);
+    } catch (e) {
+        next(e);
+    }
+})
