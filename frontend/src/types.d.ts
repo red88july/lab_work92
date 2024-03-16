@@ -21,7 +21,6 @@ export interface LoginUser {
   password: string;
 }
 
-
 export interface ValidationError {
   errors: {
     [key: string]: {

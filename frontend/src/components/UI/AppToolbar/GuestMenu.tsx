@@ -1,5 +1,7 @@
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const signUpBtn = {
   background: '#26a69a',
@@ -7,18 +9,24 @@ const signUpBtn = {
   '&:hover': {
     background: '#689f38',
   },
-  marginLeft: '10px',
+};
+
+const outerBox = {
+  display: 'flex',
+  gap: '20px',
 };
 
 const GuestMenu = () => {
   return (
     <>
-      <Button component={NavLink} to="/login" color="inherit">
-        Log In
-      </Button>
-      <Button sx={signUpBtn} component={NavLink} to="/register" color="inherit">
-        Create account
-      </Button>
+      <Box sx={outerBox}>
+        <Button component={NavLink} to="/login" color="inherit" startIcon={<LoginIcon />}>
+          Log In
+        </Button>
+        <Button sx={signUpBtn} component={NavLink} to="/register" color="inherit" startIcon={<PersonAddIcon />}>
+          Create account
+        </Button>
+      </Box>
     </>
   );
 };

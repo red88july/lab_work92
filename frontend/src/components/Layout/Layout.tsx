@@ -1,12 +1,11 @@
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 import AppToolbar from '../UI/AppToolbar/AppToolbar';
 
 const Layout:React.FC<PropsWithChildren> = ({children}) => {
-
   return (
     <>
       <header>
-        <AppToolbar/>
+        <AppToolbar />
       </header>
       <main>
         {children}

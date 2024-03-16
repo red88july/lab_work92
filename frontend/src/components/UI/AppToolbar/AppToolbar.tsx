@@ -1,11 +1,13 @@
 import { NavLink } from 'react-router-dom';
-import { AppBar, Grid, styled, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Grid, styled, Toolbar, Typography } from '@mui/material';
 
 import { useAppSelector } from '../../../app/hooks.ts';
 import { selectUser } from '../../../features/users/usersSlice.ts';
 
 import UserMenu from './UserMenu';
 import GuestMenu from './GuestMenu';
+
+import LogoChat from '../../../assets/pic/logo.jpg';
 
 const Link = styled(NavLink)({
   color: 'inherit',
@@ -18,17 +20,22 @@ const Link = styled(NavLink)({
 const AppToolbar = () => {
   const user = useAppSelector(selectUser);
 
-  if (user === undefined) {
-    return null;
-  }
-
   return (
-    <AppBar sx={{mb: 2}}>
+    <AppBar sx={{mb: 2, padding: 1}}>
       <Toolbar>
         <Grid container justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-            <Link to="/">Spot</Link>
-          </Typography>
+          <Link to="/">
+            <Box display='flex' alignItems='center' gap={2}>
+              <Box
+                component="img"
+                src={LogoChat}
+                alt="Logo chat"
+              />
+              <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                Chat App
+              </Typography>
+            </Box>
+          </Link>
           {user ? (
             <UserMenu user={user}/>
           ) : (

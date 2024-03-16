@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
 import {
   Alert,
   Avatar,
@@ -26,7 +26,6 @@ const LoginForm = () => {
 
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectLoginError);
-  const navigate = useNavigate();
 
   const isLogin = useSelector(selectLoginLoading);
 
@@ -45,7 +44,14 @@ const LoginForm = () => {
   const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     await dispatch(login(state)).unwrap();
-    navigate('/chat');
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        username: '',
+        password: '',
+      };
+    });
   };
 
   return (
@@ -53,7 +59,7 @@ const LoginForm = () => {
       <CssBaseline/>
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 15,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

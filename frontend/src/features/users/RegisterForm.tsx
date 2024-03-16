@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Box,
@@ -9,15 +9,15 @@ import {
   TextField,
   Typography,
   Link,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 
-import {useSelector} from 'react-redux';
-import {registration} from './usersThunk.ts';
-import {errorRegistration, loadingRegistration} from './usersSlice.ts';
-import {useAppDispatch} from '../../app/hooks.ts';
+import { useSelector } from 'react-redux';
+import { registration } from './usersThunk.ts';
+import { errorRegistration, loadingRegistration } from './usersSlice.ts';
+import { useAppDispatch } from '../../app/hooks.ts';
 
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { RegisterUser } from '../../types';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -55,23 +55,35 @@ const RegisterForm = () => {
     });
   };
 
-
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       await dispatch(registration(state)).unwrap();
-      navigate('/');
+
+      setState((prevState) => {
+        return {
+          ...prevState,
+          username: '',
+          displayName: '',
+          password: '',
+        };
+      });
+
+      navigate('/login');
+
+
     } catch (e) {
       //error
     }
   };
+
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline/>
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 15,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -114,7 +126,6 @@ const RegisterForm = () => {
             autoComplete="new-displayName"
             autoFocus
           />
-
           <TextField
             required
             fullWidth
