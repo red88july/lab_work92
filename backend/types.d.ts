@@ -13,6 +13,7 @@ export interface UserTypes {
 
 export interface UserDataExtendsSchema extends UserTypes {
     token: string;
+    role: string;
 }
 
 interface UserMethods {
