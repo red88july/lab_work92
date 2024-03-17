@@ -6,7 +6,7 @@ import PageNoFoundPicture from '../../frontend/src/assets/pic/404PageNotFound.jp
 
 import Layout from './components/Layout/Layout';
 import Chat from './features/Chat';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.tsx';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { useAppSelector } from './app/hooks.ts';
 import { selectUser } from './features/users/usersSlice.ts';
 

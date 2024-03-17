@@ -37,3 +37,21 @@ export interface ValidationError {
 export interface GlobalError {
   error: string;
 }
+
+export interface ChatMessage {
+  author: string;
+  token: string;
+  message: string;
+}
+
+export interface IncomingChatMessage {
+  type: 'NEW_MESSAGE';
+  payload: ChatMessage;
+}
+
+export interface IncomingWelcomeMessage {
+  type: 'WELCOME';
+  payload: string;
+}
+
+export type IncomingMessage = IncomingChatMessage | IncomingWelcomeMessage

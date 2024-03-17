@@ -1,10 +1,10 @@
 import express from 'express';
 import expressWs from 'express-ws';
-import mongoose from "mongoose";
+import mongoose, {connection} from "mongoose";
 import crypto from "crypto";
 import cors from 'cors';
 
-import {ActiveConnections} from "./types";
+import {ActiveConnections, IncomingMessage} from "./types";
 import connectToDB from "./connectToDB";
 import {usersRouter} from "./routers/users";
 
@@ -19,32 +19,45 @@ app.use('/users', usersRouter);
 expressWs(app);
 app.use(router);
 
+const activeConnections: ActiveConnections = {};
 
+router.ws('/chatApp', (ws, req) => {
+    const id = crypto.randomUUID();
+    console.log('client connected! id=', id);
+    activeConnections[id] = ws;
+    let username = 'Anonymous';
+    let token = '';
+    let onlineUser = [];
 
+    ws.send(JSON.stringify({type: 'WELCOME', payload: 'Welcome! You have connected to the chat!'}));
 
-// const activeConnections: ActiveConnections = {};
-//
-// router.ws('/chatApp', (ws, req) => {
-//     const id = crypto.randomUUID();
-//     console.log('client connected! id=', id);
-//     activeConnections[id] = ws;
-//
-//     // ws.on('message', (message: string) => {
-//     //     const decodedDots = JSON.parse(message);
-//     //
-//     //     if (decodedDots.type === 'SET_DOTS') {
-//     //         Object.values(activeConnections).forEach(connection => {
-//     //             const outgoingDots = {type: 'NEW_DOTS', payload: decodedDots.payload}
-//     //             connection.send(JSON.stringify(outgoingDots));
-//     //         })
-//     //     }
-//     // });
-//
-//     ws.on('close', () => {
-//         console.log('client disconnected! id=', id);
-//         delete activeConnections[id];
-//     });
-// });
+    ws.on('message', (message) => {
+        const decodedMessage = JSON.parse(message.toString()) as IncomingMessage;
+
+        if (decodedMessage.type === 'LOGIN') {
+            token = decodedMessage.payload;
+        }
+
+        if (decodedMessage.type === 'SET_USERNAME') {
+            username = decodedMessage.payload;
+        } else if (decodedMessage.type === 'SET_MESSAGE') {
+            Object.values(activeConnections).forEach(connection => {
+                const outgoingMessage = {type: 'NEW_MESSAGE', payload: {
+                        author: username,
+                        token: token,
+                        message: decodedMessage.payload,
+                    }}
+
+                connection.send(JSON.stringify(outgoingMessage));
+            })
+        }
+    });
+
+    ws.on('close', () => {
+        console.log('client disconnected! id=', id);
+        delete activeConnections[id];
+    });
+});
 
 const run = async () => {
     await mongoose.connect(connectToDB.db);

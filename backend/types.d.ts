@@ -5,6 +5,11 @@ export interface ActiveConnections {
     [id: string]: WebSocket;
 }
 
+export interface IncomingMessage {
+    type: string;
+    payload: string;
+}
+
 export interface UserTypes {
     username: string;
     displayName: string;
@@ -22,3 +27,4 @@ interface UserMethods {
 }
 
 type UserModel = Model<UserDataExtendsSchema, {}, UserMethods>
+
