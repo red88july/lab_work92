@@ -4,7 +4,7 @@ import mongoose, {connection} from "mongoose";
 import crypto from "crypto";
 import cors from 'cors';
 
-import {ActiveConnections, IncomingMessage} from "./types";
+import {ActiveConnections, IncomingMessage, IncomingUser} from "./types";
 import connectToDB from "./connectToDB";
 import {usersRouter} from "./routers/users";
 
@@ -23,13 +23,16 @@ const activeConnections: ActiveConnections = {};
 
 router.ws('/chatApp', (ws, req) => {
     const id = crypto.randomUUID();
-    console.log('client connected! id=', id);
     activeConnections[id] = ws;
+    console.log('client connected! id=', id);
+
     let username = 'Anonymous';
     let token = '';
-    let onlineUser = [];
+
+    let onlineUsers = [];
 
     ws.send(JSON.stringify({type: 'WELCOME', payload: 'Welcome! You have connected to the chat!'}));
+
 
     ws.on('message', (message) => {
         const decodedMessage = JSON.parse(message.toString()) as IncomingMessage;
@@ -40,13 +43,17 @@ router.ws('/chatApp', (ws, req) => {
 
         if (decodedMessage.type === 'SET_USERNAME') {
             username = decodedMessage.payload;
+            onlineUsers.push(username)
+            console.log("Users", onlineUsers);
         } else if (decodedMessage.type === 'SET_MESSAGE') {
             Object.values(activeConnections).forEach(connection => {
-                const outgoingMessage = {type: 'NEW_MESSAGE', payload: {
+                const outgoingMessage = {
+                    type: 'NEW_MESSAGE', payload: {
                         author: username,
                         token: token,
                         message: decodedMessage.payload,
-                    }}
+                    }
+                }
 
                 connection.send(JSON.stringify(outgoingMessage));
             })
@@ -71,4 +78,5 @@ const run = async () => {
     });
 
 };
+
 void run();

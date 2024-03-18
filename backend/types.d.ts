@@ -10,6 +10,10 @@ export interface IncomingMessage {
     payload: string;
 }
 
+export interface IncomingUser {
+    type: string;
+    payload: string;
+}
 export interface UserTypes {
     username: string;
     displayName: string;

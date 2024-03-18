@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Container, TextField } from '@mui/material';
+import { Alert, Box, Button, Container, TextField } from '@mui/material';
 import backgroundChat from '../assets/pic/backgorundChat.jpg';
 
 import SendIcon from '@mui/icons-material/Send';
@@ -14,7 +14,7 @@ const mainBox = {
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   gap: 5,
-  marginTop: 15,
+  marginTop: 2,
   padding: '5px 25px 2px 25px',
   borderRadius: '10px',
 
@@ -50,6 +50,7 @@ const Chat: React.FC = () => {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [messagesText, setMessagesText] = useState('');
+  const [totalTry, setTotalTry] = useState(0);
 
   const ws = useRef<WebSocket | null>(null);
 
@@ -57,19 +58,32 @@ const Chat: React.FC = () => {
     setMessagesText(event.target.value);
   };
 
+  const handleReconnect = () => {
+    console.log('WS closed! Try reconnected');
+
+    let tried = 0;
+
+    const reconnect = setInterval(() => {
+      ws.current = new WebSocket('ws://localhost:8000/chatApp');
+      tried++;
+      setTotalTry(tried);
+
+      }, 2000);
+
+    setTimeout(() => {
+      clearInterval(reconnect);
+      console.log('Stop reconnecting. WS closed!');
+    }, 6000);
+  };
+
+
   useEffect(() => {
     ws.current = new WebSocket('ws://localhost:8000/chatApp');
 
-    ws.current.addEventListener('close', () => {
-      console.log('ws closed');
-    });
-
+    ws.current.addEventListener('close', handleReconnect);
 
     ws.current.addEventListener('message', (event) => {
-      console.log(event.data);
-
       const decodedMessage = JSON.parse(event.data) as IncomingMessage;
-
 
       if (decodedMessage.type === 'NEW_MESSAGE') {
         setMessages((prev) => [...prev, decodedMessage.payload]);
@@ -83,10 +97,10 @@ const Chat: React.FC = () => {
     return () => {
       if (ws.current) {
         ws.current.close();
+
       }
     };
   }, []);
-
 
   const sendMessage = (event: React.FormEvent) => {
     event.preventDefault();
@@ -111,44 +125,55 @@ const Chat: React.FC = () => {
 
   };
 
-
-  console.table(messages);
-
   return (
     <>
       <Container maxWidth="lg">
-        <Box sx={mainBox}>
-          <Box sx={userBox}>
-            {user?.displayName}
-          </Box>
-          <Box>
-            <Box sx={chatBox}>
+
+        <Box marginTop={12}>
+          {totalTry &&
+            (<Alert severity="warning">
+              {`Server is down.  Try to connect with server is ${totalTry}`}
+            </Alert>)}
+          <Box sx={mainBox}>
+            <Box sx={userBox}>
               {messages.map((message, idx) => (
                 <span key={idx}>
-                  <b>{message.author}: </b>{message.message}
+                  <b>{message.author}</b>
                 </span>
               ))}
+              {/*{user?.displayName}*/}
             </Box>
-            <Box
-              component="form"
-              onSubmit={sendMessage}
-              display="flex"
-              justifyContent="space-between"
-              padding="5px 0 5px 0">
-              <TextField
-                value={messagesText}
-                onChange={changeMessage}
-                placeholder="Enter your message"
-                sx={{width: '480px', background: '#FFFFFF', borderRadius: '5px'}}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                endIcon={(<SendIcon/>)
-                }>SEND </Button>
+            <Box>
+              <Box sx={chatBox}>
+                {messages.map((message, idx) => (
+                  <span key={idx}>
+                  <b>{message.author}: </b>{message.message}
+                </span>
+                ))}
+              </Box>
+              <Box
+                component="form"
+                onSubmit={sendMessage}
+                display="flex"
+                justifyContent="space-between"
+                padding="5px 0 5px 0">
+                <TextField
+                  value={messagesText}
+                  onChange={changeMessage}
+                  placeholder="Enter your message"
+                  sx={{width: '480px', background: '#FFFFFF', borderRadius: '5px'}}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  endIcon={(<SendIcon/>)
+                  }>SEND </Button>
+
+              </Box>
             </Box>
           </Box>
         </Box>
+
       </Container>
     </>
   );
