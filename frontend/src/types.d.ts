@@ -39,6 +39,7 @@ export interface GlobalError {
 }
 
 export interface ChatMessage {
+  _id: string;
   author: string;
   token: string;
   message: string;

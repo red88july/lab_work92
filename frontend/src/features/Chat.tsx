@@ -107,6 +107,12 @@ const Chat: React.FC = () => {
 
     if (!ws.current) return;
     ws.current.send(JSON.stringify({
+      type: 'USER_ID',
+      payload: user?._id,
+    }));
+
+    if (!ws.current) return;
+    ws.current.send(JSON.stringify({
       type: 'LOGIN',
       payload: user?.token,
     }));
@@ -123,6 +129,8 @@ const Chat: React.FC = () => {
       payload: messagesText,
     }));
 
+    setMessagesText('');
+
   };
 
   return (
@@ -136,12 +144,7 @@ const Chat: React.FC = () => {
             </Alert>)}
           <Box sx={mainBox}>
             <Box sx={userBox}>
-              {messages.map((message, idx) => (
-                <span key={idx}>
-                  <b>{message.author}</b>
-                </span>
-              ))}
-              {/*{user?.displayName}*/}
+              {user?.displayName}
             </Box>
             <Box>
               <Box sx={chatBox}>

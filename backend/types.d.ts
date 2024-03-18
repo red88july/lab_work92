@@ -9,11 +9,6 @@ export interface IncomingMessage {
     type: string;
     payload: string;
 }
-
-export interface IncomingUser {
-    type: string;
-    payload: string;
-}
 export interface UserTypes {
     username: string;
     displayName: string;
